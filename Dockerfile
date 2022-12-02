@@ -1,6 +1,20 @@
 # Select BASE
 FROM tomcat:8.5-jdk8-openjdk-slim-bullseye
 
+# Add fixes for Critical and High vulnerabilities in tomcat:8.5-jdk8-openjdk-slim-bullseye
+#
+#   CVE-2022-37434  Critical  zlib      Out-of-bounds Write  Fixed in: zlib/zlib1g@1:1.2.11.dfsg-2+deb11u2
+#   CVE-2022-1586   Critical  pcre2     Out-of-bounds Read   Fixed in: pcre2/libpcre2-8-0@10.36-2+deb11u1
+#   CVE-2022-1587   Critical  pcre2     Out-of-bounds Read   Fixed in: pcre2/libpcre2-8-0@10.36-2+deb11u1
+#   CVE-2021-3999   High      glibc     Off-by-one Error     Fixed in: glibc/libc6@2.31-13+deb11u4
+#   CVE-2022-2509   High      gnutls28  Double Free          Fixed in: gnutls28/libgnutls30@3.7.1-5+deb11u2
+
+RUN apt-get update \
+    && apt-get install -y zlib1g \
+    && apt-get install -y libpcre2-8-0 \
+    && apt-get install -y libc6 \
+    && apt-get install -y libgnutls30
+
 SHELL ["/bin/bash", "-c"]
 
 ARG APPLICATION="guacamole"
